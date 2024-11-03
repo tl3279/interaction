@@ -1,23 +1,22 @@
----
-title: "writing fxns"
-author: "Tianqi Li"
-date: "2024-11-03"
-output: github_document
----
-
-```{r setup, include=FALSE}
-library(tidyverse)
-library(rvest)
-```
+writing fxns
+================
+Tianqi Li
+2024-11-03
 
 # My first function
 
-```{r}
+``` r
 x_vec = rnorm(25, mean = 5, sd = 3)
 (x_vec - mean(x_vec))/sd(x_vec)
 ```
 
-```{r}
+    ##  [1] -0.6679852 -0.6719874 -0.5788603  0.4292183 -0.1179703  1.5682129
+    ##  [7]  0.3871633  0.5615481  1.2875390 -0.7154182 -0.9672472  1.0838814
+    ## [13] -0.7758121 -0.4895676  0.4292619  0.2938984  0.7625819 -2.0182637
+    ## [19] -1.1039454 -1.3230288 -1.3496117  0.5889913  1.1460627  0.5573350
+    ## [25]  1.6840034
+
+``` r
 z_scores = function(x) {
   z = (x - mean(x)) / sd(x)
   z
@@ -26,7 +25,13 @@ z_scores = function(x) {
 z_scores(x_vec)
 ```
 
-```{r}
+    ##  [1] -0.6679852 -0.6719874 -0.5788603  0.4292183 -0.1179703  1.5682129
+    ##  [7]  0.3871633  0.5615481  1.2875390 -0.7154182 -0.9672472  1.0838814
+    ## [13] -0.7758121 -0.4895676  0.4292619  0.2938984  0.7625819 -2.0182637
+    ## [19] -1.1039454 -1.3230288 -1.3496117  0.5889913  1.1460627  0.5573350
+    ## [25]  1.6840034
+
+``` r
 z_scores = function(x) {
   
   if (!is.numeric(x)) {
@@ -43,7 +48,7 @@ z_scores = function(x) {
 
 # Multiple outputs
 
-```{r}
+``` r
 mean_and_sd = function(x) {
   
   if (!is.numeric(x)) {
@@ -78,7 +83,7 @@ mean_and_sd_2 = function(x) {
 
 # Multiple inputs
 
-```{r}
+``` r
 sim_data = tibble(
   x = rnorm(30, mean = 2, sd = 3)
 )
@@ -88,7 +93,14 @@ sim_data |>
     mu_hat = mean(x),
     sigma_hat = sd(x)
   )
+```
 
+    ## # A tibble: 1 × 2
+    ##   mu_hat sigma_hat
+    ##    <dbl>     <dbl>
+    ## 1   2.33      2.99
+
+``` r
 sim_mean_sd = function(n, mu = 2, sigma = 3) {
   
   sim_data = tibble(
@@ -106,11 +118,16 @@ sim_mean_sd = function(n, mu = 2, sigma = 3) {
 sim_mean_sd(n=30,mu=1,sigma=5)
 ```
 
+    ## # A tibble: 1 × 2
+    ##   mu_hat sigma_hat
+    ##    <dbl>     <dbl>
+    ## 1  0.217      4.88
+
 # Revisiting examples
 
 ## LoTR
 
-```{r}
+``` r
 fellowship_ring = readxl::read_excel("./data/LotR_Words.xlsx", range = "B3:D6") |>
   mutate(movie = "fellowship_ring")
 
@@ -132,7 +149,7 @@ lotr_tidy = bind_rows(fellowship_ring, two_towers, return_king) |>
 
 Using functions
 
-```{r}
+``` r
 lotr_load_and_tidy = function(path, range, movie_name) {
     df = 
     readxl::read_excel(path, range = range) |>
@@ -158,7 +175,7 @@ lotr_tidy =
 
 ## NSDUH
 
-```{r}
+``` r
 nsduh_url = "http://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm"
 
 nsduh_html = read_html(nsduh_url)
@@ -181,7 +198,7 @@ data_marj =
   filter(!(State %in% c("Total U.S.", "Northeast", "Midwest", "South", "West")))
 ```
 
-```{r}
+``` r
 nsduh_table <- function(html, table_num, table_name) {
   
   table = 
@@ -220,7 +237,7 @@ nsduh_results =
 
 # Functions as arguments
 
-```{r}
+``` r
 x_vec = rnorm(25, 0, 1)
 
 my_summary = function(x, summ_func) {
@@ -228,11 +245,23 @@ my_summary = function(x, summ_func) {
 }
 
 my_summary(x_vec, sd)
+```
+
+    ## [1] 0.8080395
+
+``` r
 my_summary(x_vec, IQR)
+```
+
+    ## [1] 0.8825714
+
+``` r
 my_summary(x_vec, var)
 ```
 
-```{r}
+    ## [1] 0.6529278
+
+``` r
 f = function(x) {
   z = x + y
   z
@@ -241,13 +270,22 @@ f = function(x) {
 x = 1
 y = 3
 f(x = y)
+```
 
+    ## [1] 6
+
+``` r
 x = 1
 y = 2
 f(x = y)
+```
 
+    ## [1] 4
+
+``` r
 x = 3
 y = 2
 f(x = y)
 ```
 
+    ## [1] 4

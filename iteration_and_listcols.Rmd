@@ -2,7 +2,7 @@
 title: "interaction and listcols"
 author: "Tianqi Li"
 date: "2024-11-03"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
